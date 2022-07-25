@@ -6,7 +6,7 @@ open class DataController {
 	public let persistentContainerName: String
 	public let appGroupName: String?
 	
-	lazy var persistentContainer: NSPersistentContainer = { () -> NSPersistentContainer in
+	open lazy var persistentContainer: NSPersistentContainer = { () -> NSPersistentContainer in
 		// Create container
 		let container = NSPersistentContainer(name: persistentContainerName)
 		container.loadPersistentStores { description, error in
@@ -38,15 +38,15 @@ open class DataController {
 		return container
 	}()
 	
-	var moc: NSManagedObjectContext { persistentContainer.viewContext }
+	open var moc: NSManagedObjectContext { persistentContainer.viewContext }
 	
-	init(name: String, appGroupName: String? = nil) {
+	public init(name: String, appGroupName: String? = nil) {
 		print("DataController starting for persistent container \"\(name)\"")
 		self.persistentContainerName = name
 		self.appGroupName = appGroupName
 	}
 	
-	func loadPersistentContainer() {
+	open func loadPersistentContainer() {
 		let _ = persistentContainer
 	}
 }
@@ -62,7 +62,7 @@ extension DataController {
 	/// - Returns: The requested data, or the default value if it can't be found.
 	///
 	/// - Precondition: There must be only one instance of the data. If not, the first one will be returned.
-	func loadData<T: NSManagedObject>(
+	open func loadData<T: NSManagedObject>(
 		sortDescriptors: [NSSortDescriptor] = [],
 		predicate: NSPredicate? = nil,
 		defaultValue: T? = nil
@@ -89,7 +89,7 @@ extension DataController {
 	///   + defaultValue: The default value for the data if it can't be found. Defaults to an empty array.
 	///
 	/// - Returns: The requested array of data, or the default value if it can't be found.
-	func loadDataArray<T: NSManagedObject>(
+	open func loadDataArray<T: NSManagedObject>(
 		sortDescriptors: [NSSortDescriptor] = [],
 		predicate: NSPredicate? = nil,
 		resultsLimit: Int? = nil,
@@ -112,7 +112,7 @@ extension DataController {
 	/// Save data to disk
 	/// - Returns: `true` if the data was saved correctly, `false` if there was an error or no data to save.
 	@discardableResult
-	func save() -> Bool {
+	open func save() -> Bool {
 		if moc.hasChanges {
 			do {
 				try moc.save()
